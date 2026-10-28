@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TraceBack | Lost & Found</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-mark">TB</div>
+    <div class="brand-copy">
+      <h1>TraceBack</h1>
+      <p>Blockchain-Based Lost &amp; Found System</p>
+    </div>
+    <span class="demo-badge">FRONTEND DEMO</span>
+  </header>
+
+  <nav class="main-nav" aria-label="Main navigation">
+    <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+    <button class="nav-btn" data-view="register">Report Found Item</button>
+    <button class="nav-btn" data-view="search">Find an Item</button>
+    <button class="nav-btn" data-view="claims">Claims</button>
+    <button class="nav-btn" data-view="history">Event History</button>
+  </nav>
+
+  <main class="container">
+    <div id="notice" class="notice hidden" role="status"></div>
+
+    <section id="view-dashboard" class="view">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">COLLEGE LOST &amp; FOUND</p>
+          <h2>Help lost belongings<br><span>find their way home.</span></h2>
+          <p class="hero-text">Report found items, search records, submit claims and follow each item's status in one place.</p>
+          <button class="primary-btn" data-go="register">Report a found item</button>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="circle circle-one"></div><div class="circle circle-two"></div>
+          <div class="hero-card"><span class="hero-icon">⌕</span><strong>Item tracking</strong><small>Found → Claimed → Returned</small></div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card"><span class="stat-label">Total items</span><strong id="stat-total">0</strong><span class="stat-foot">Registered records</span></article>
+        <article class="stat-card"><span class="stat-label">Found</span><strong id="stat-found">0</strong><span class="stat-foot">Waiting for a claim</span></article>
+        <article class="stat-card"><span class="stat-label">Claims pending</span><strong id="stat-claims">0</strong><span class="stat-foot">Need to be reviewed</span></article>
+        <article class="stat-card"><span class="stat-label">Returned</span><strong id="stat-returned">0</strong><span class="stat-foot">Marked as handed over</span></article>
+      </div>
+
+      <div class="section-heading"><div><p class="eyebrow">LATEST RECORDS</p><h3>Recently added items</h3></div><button class="text-btn" data-go="search">View all items →</button></div>
+      <div id="recent-items" class="item-grid"></div>
+    </section>
+
+    <section id="view-register" class="view hidden">
+      <div class="page-heading"><p class="eyebrow">ITEM REGISTRATION</p><h2>Report a found item</h2><p>Add enough detail to help the owner recognise the item. Avoid publishing private information.</p></div>
+      <form id="register-form" class="form-card">
+        <div class="form-grid">
+          <label>Item name <span>*</span><input name="name" required maxlength="70" placeholder="e.g. Black water bottle"></label>
+          <label>Category <span>*</span><select name="category" required><option value="">Select category</option><option>Electronics</option><option>Books &amp; Stationery</option><option>Wallet / ID card</option><option>Clothing</option><option>Keys</option><option>Accessories</option><option>Other</option></select></label>
+          <label>Found location <span>*</span><input name="location" required maxlength="100" placeholder="e.g. Library, 2nd floor"></label>
+          <label>Date found <span>*</span><input name="dateFound" type="date" required></label>
+          <label class="full-width">Description <span>*</span><textarea name="description" required rows="4" maxlength="500" placeholder="Describe colour, brand or other identifying features."></textarea></label>
+          <label>Finder display name (optional)<input name="finder" maxlength="60" placeholder="e.g. Student volunteer"></label>
+        </div>
+        <div class="form-actions"><p>* Required fields</p><button class="primary-btn" type="submit">Register item</button></div>
+      </form>
+    </section>
+
+    <section id="view-search" class="view hidden">
+      <div class="page-heading"><p class="eyebrow">SEARCH RECORDS</p><h2>Find an item</h2><p>Search by item name, category, location or unique item ID.</p></div>
+      <div class="search-bar"><span>⌕</span><input id="search-input" type="search" placeholder="Try “water bottle” or “library”…"><button id="clear-search" class="secondary-btn">Clear</button></div>
+      <div class="filter-row"><label for="status-filter">Status</label><select id="status-filter"><option value="All">All statuses</option><option>Found</option><option>Claimed</option><option>Returned</option></select><span id="result-count" class="muted"></span></div>
+      <div id="all-items" class="item-grid"></div>
+      <p id="empty-search" class="empty-state hidden">No matching items. Try a different search.</p>
+    </section>
+
+    <section id="view-claims" class="view hidden">
+      <div class="page-heading"><p class="eyebrow">CLAIM MANAGEMENT</p><h2>Claims</h2><p>For this frontend demo, a reviewer can approve or reject a submitted claim.</p></div>
+      <div id="claims-list" class="stack-list"></div>
+      <p id="empty-claims" class="empty-state hidden">There are no claims to review yet.</p>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <div class="page-heading"><p class="eyebrow">AUDIT TRAIL</p><h2>Event history</h2><p>A chronological list of actions simulated in this browser. It is not a real blockchain ledger.</p></div>
+      <div class="history-actions"><button id="export-history" class="secondary-btn">Export history as JSON</button><button id="reset-demo" class="danger-btn">Reset demo data</button></div>
+      <div id="history-list" class="timeline"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>TraceBack — Student project prototype</p>
+    <p class="footer-note">Demo only: data is saved in this browser using localStorage. No backend or real blockchain is connected.</p>
+  </footer>
+
+  <dialog id="claim-dialog" class="modal">
+    <form id="claim-form" method="dialog">
+      <div class="modal-heading"><div><p class="eyebrow">CLAIM ITEM</p><h3>Submit a claim</h3></div><button type="button" id="close-claim" class="close-btn" aria-label="Close">×</button></div>
+      <input type="hidden" name="itemId">
+      <label>Your name <span>*</span><input name="claimant" required maxlength="70" placeholder="Enter your name"></label>
+      <label>Why do you believe this is yours? <span>*</span><textarea name="proof" required rows="4" maxlength="500" placeholder="Mention identifying details that are not shown in the public description."></textarea></label>
+      <p class="privacy-note">Do not enter passwords, government ID numbers or other sensitive information.</p>
+      <button class="primary-btn full-btn" type="submit">Submit claim</button>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
